@@ -10,7 +10,7 @@ def main_keyboard():
     keyboard = ReplyKeyboardMarkup(
         keyboard=kb_list,
         resize_keyboard=True,
-        one_time_keyboard=True,
+        one_time_keyboard=False,
     )
 
     return keyboard
