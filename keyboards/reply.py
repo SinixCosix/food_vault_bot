@@ -3,8 +3,10 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 def main_keyboard():
     kb_list = [
-        [KeyboardButton(text="➕ Add"), KeyboardButton(text="✏ Edit")],
-        [KeyboardButton(text="🔎 View and Search")]
+        [KeyboardButton(text="➕ New"),
+         KeyboardButton(text="✏ Edit")],
+
+        [KeyboardButton(text='🔁'), KeyboardButton(text="🔎 Search")]
     ]
 
     keyboard = ReplyKeyboardMarkup(

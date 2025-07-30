@@ -1,7 +1,23 @@
 import asyncio
 
 from create_bot import bot, dp
-from handlers.start import start_router
+from handlers.categories import router as categories_router
+from handlers.comments import router as comments_router
+from handlers.finish import router as finish_router
+from handlers.products import router as products_router
+from handlers.ratings import router as ratings_router
+from handlers.start import router as start_router
+from handlers.variants import router as variants_router
+
+
+def register_routers():
+    dp.include_router(start_router)
+    dp.include_router(products_router)
+    dp.include_router(categories_router)
+    dp.include_router(variants_router)
+    dp.include_router(ratings_router)
+    dp.include_router(comments_router)
+    dp.include_router(finish_router)
 
 
 async def start_bot():
@@ -9,7 +25,7 @@ async def start_bot():
 
 
 async def main():
-    dp.include_router(start_router)
+    register_routers()
     dp.startup.register(start_bot)
 
     try:
