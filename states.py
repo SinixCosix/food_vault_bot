@@ -1,12 +1,68 @@
-from aiogram.fsm.state import State, StatesGroup as AiogramStatesGroup
+from aiogram.fsm.state import State as AiogramState, StatesGroup as AiogramStatesGroup
+
+from keyboards.inline import category_keyboard, rating_keyboard, navigation_keyboard
+
+
+class State(AiogramState):
+    def __init__(self, options: dict):
+        super().__init__()
+        self.text = options['text']
+        self.keyboard = options['keyboard']
 
 
 class States(AiogramStatesGroup):
-    product = State()
-    category = State()
-    variant = State()
-    flavor = State()
-    rating_arina = State()
-    comment_arina = State()
-    rating_andrew = State()
-    comment_andrew = State()
+    category = State({
+        'text': 'Select or create category:',
+        'keyboard': category_keyboard()
+    })
+    variant = State({
+        'text': 'Enter variant:',
+        'keyboard': navigation_keyboard()(
+            navigation={
+                'skip': 'go.to.variant',
+                'back': 'go.to.category'
+            },
+        )
+    })
+    flavor = State({
+        'text': 'Enter flavor:',
+        'keyboard': navigation_keyboard()(
+            navigation={
+                'back': 'go.to.variant'
+            }
+        )
+    })
+    rating_arina = State({
+        'text': 'Arina:',
+        'keyboard': rating_keyboard(
+            user='arina',
+            navigation={
+                'back': 'go.to.flavor'
+            }
+        )
+    })
+    comment_arina = State({
+        'text': 'Comment from Arina:',
+        'keyboard': navigation_keyboard()(
+            navigation={
+                'skip': 'go.to.comment.arina',
+                'back': 'go.to.rating.arina'
+            }
+        )
+    })
+    rating_andrew = State({
+        'text': 'Andrew:',
+        'keyboard': rating_keyboard(
+            user='andrew',
+            navigation={
+                'back': 'go.to.comment.arina'
+            }
+        )
+    })
+    comment_andrew = State({
+        'text': 'Comment from Andrew:',
+        'keyboard': navigation_keyboard()(
+            skip_data='go.to.comment.andrew',
+            back_data='go.to.rating.andrew'
+        )
+    })
