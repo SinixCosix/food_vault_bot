@@ -19,7 +19,7 @@ class States(AiogramStatesGroup):
         'text': 'Enter variant:',
         'keyboard': navigation_keyboard()(
             navigation={
-                'skip': 'go.to.variant',
+                'skip': 'go.to.flavor',
                 'back': 'go.to.category'
             },
         )
@@ -45,7 +45,7 @@ class States(AiogramStatesGroup):
         'text': 'Comment from Arina:',
         'keyboard': navigation_keyboard()(
             navigation={
-                'skip': 'go.to.comment.arina',
+                'skip': 'go.to.rating.andrew',
                 'back': 'go.to.rating.arina'
             }
         )
@@ -62,7 +62,9 @@ class States(AiogramStatesGroup):
     comment_andrew = State({
         'text': 'Comment from Andrew:',
         'keyboard': navigation_keyboard()(
-            skip_data='go.to.comment.andrew',
-            back_data='go.to.rating.andrew'
+            navigation={
+                'skip': 'finish',
+                'back': 'go.to.rating.andrew'
+            }
         )
     })
