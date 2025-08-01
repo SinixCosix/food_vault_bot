@@ -24,8 +24,8 @@ async def select(callback: CallbackQuery, state: FSMContext):
     category = callback.data.split('.')[-1]
     await state.update_data(category=category)
 
-    await state.set_state(States.variant)
-    await callback.message.edit_text(text=States.variant.text, reply_markup=States.variant.keyboard)
+    await state.set_state(States.product)
+    await callback.message.edit_text(text=States.product.text, reply_markup=States.product.keyboard)
 
 
 @router.message(States.category)
@@ -33,5 +33,5 @@ async def create(message: Message, state: FSMContext):
     category = message.text.strip()
     await state.update_data(category=category)
 
-    await state.set_state(States.variant)
-    await message.answer(text=States.variant.text, reply_markup=States.variant.keyboard)
+    await state.set_state(States.product)
+    await message.answer(text=States.product.text, reply_markup=States.product.keyboard)
