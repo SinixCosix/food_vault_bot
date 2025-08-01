@@ -1,8 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery
 
-from handlers.finish import finish
 from states import States
 
 router = Router()
@@ -36,5 +35,3 @@ async def rate_andrew(callback: CallbackQuery, state: FSMContext):
 
     await state.set_state(States.comment_andrew)
     await callback.message.edit_text(States.comment_andrew.text, reply_markup=States.comment_andrew.keyboard)
-
-
