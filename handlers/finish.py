@@ -3,6 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
 from keyboards.inline import finish_keyboard
+from utils.format import format_product
 
 router = Router()
 
@@ -13,18 +14,10 @@ async def handle_finish(callback: CallbackQuery, state: FSMContext):
 
 
 async def finish(message_or_callback, state: FSMContext):
-    data = await state.get_data()
+    product = await state.get_data()
     await state.clear()
 
-    fields = [data.get('category'), data.get('variant'), data.get('flavor')]
-
-    text = (
-        f"📂 {fields})\n\n"
-        f"🦖 Arina: {data['rating_arina']}/10\n"
-        f"💬 {data.get('comment_arina') or '—'}\n\n"
-        f"🌵 Andrew: {data['rating_andrew']}/10\n"
-        f"💬 {data.get('comment_andrew') or '—'}"
-    )
-
+    text = format_product(product)
     message = message_or_callback.message or message_or_callback
     await message.answer(text, reply_markup=finish_keyboard())
+
