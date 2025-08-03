@@ -1,6 +1,6 @@
 import pytest
 
-from utils.format import format_product
+from bot.utils.format import format_product
 
 
 def test_format_product_full_data():

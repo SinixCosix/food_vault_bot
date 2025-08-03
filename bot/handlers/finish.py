@@ -2,8 +2,8 @@ from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from keyboards.inline import finish_keyboard
-from utils.format import format_product
+from bot.keyboards.inline import finish_keyboard
+from bot.utils.format import format_product
 
 router = Router()
 

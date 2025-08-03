@@ -2,8 +2,8 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from handlers.finish import finish
-from states import States
+from bot.handlers.finish import finish
+from bot.states import States
 
 router = Router()
 

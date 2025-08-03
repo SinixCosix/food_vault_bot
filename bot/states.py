@@ -1,6 +1,6 @@
 from aiogram.fsm.state import State as AiogramState, StatesGroup as AiogramStatesGroup
 
-from keyboards.inline import category_keyboard, rating_keyboard, product_keyboard, navigation_keyboard
+from bot.keyboards.inline import category_keyboard, rating_keyboard, product_keyboard, navigation_keyboard
 
 
 class State(AiogramState):

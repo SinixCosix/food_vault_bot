@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from create_bot import storage
+from bot.create_bot import storage
 
 
 def navigation_keyboard(function=None):
