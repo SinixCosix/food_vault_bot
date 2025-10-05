@@ -9,6 +9,7 @@ from bot.handlers.flavor import router as flavors_router
 from bot.handlers.rating import router as ratings_router
 from bot.handlers.start import router as start_router
 from bot.handlers.variant import router as variants_router
+from bot.handlers.debug import router as debug_router
 
 
 def register_routers():
@@ -20,6 +21,7 @@ def register_routers():
     dp.include_router(ratings_router)
     dp.include_router(comments_router)
     dp.include_router(finish_router)
+    dp.include_router(debug_router)
 
 
 async def start_bot():

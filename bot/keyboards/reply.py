@@ -6,7 +6,8 @@ def main_keyboard():
         [KeyboardButton(text="➕ New"),
          KeyboardButton(text="✏ Edit")],
 
-        [KeyboardButton(text='🔁'), KeyboardButton(text="🔎 Search")]
+        [KeyboardButton(text='🔁'), KeyboardButton(text="🔎 Search")],
+        [KeyboardButton(text='debug-add-product')],
     ]
 
     keyboard = ReplyKeyboardMarkup(

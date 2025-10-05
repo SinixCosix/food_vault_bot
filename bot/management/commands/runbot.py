@@ -20,3 +20,4 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.ERROR(f'Bot error: {e}')
             )
+

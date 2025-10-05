@@ -6,6 +6,8 @@ from ..models.category import Category
 from ..models.flavor import Flavor
 from .rating import RatingSerializer
 from .comment import CommentSerializer
+from ..models.rating import Rating
+from ..models.comment import Comment
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -20,7 +22,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductCreateUpdateSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     """Serializer for creating and updating products with related objects"""
     category = serializers.CharField()
     flavors = serializers.ListField(
@@ -35,10 +37,20 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
     )
     telegram_id = serializers.IntegerField()
     username = serializers.CharField(required=False, allow_blank=True)
+    # Nested create inputs
+    ratings = serializers.ListField(
+        child=serializers.DictField(), required=False, allow_empty=True
+    )
+    comments = serializers.ListField(
+        child=serializers.DictField(), required=False, allow_empty=True
+    )
 
     class Meta:
         model = Product
-        fields = ['category', 'variant', 'telegram_id', 'username', 'flavors', 'groups']
+        fields = [
+            'category', 'variant', 'telegram_id', 'username',
+            'flavors', 'groups', 'ratings', 'comments'
+        ]
 
     def validate_category(self, value):
         if not value:
@@ -58,6 +70,8 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
         username = validated_data.pop('username', '')
         flavor_names = validated_data.pop('flavors', [])
         group_names = validated_data.pop('groups', [])
+        rating_items = validated_data.pop('ratings', [])
+        comment_items = validated_data.pop('comments', [])
 
         # Get or create category
         category, _ = Category.objects.get_or_create(name=category_name)
@@ -86,6 +100,40 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
             if group_name:  # Skip empty strings
                 group, _ = UserGroup.objects.get_or_create(name=group_name)
                 product.groups.add(group)
+
+        # Create or update ratings if provided
+        for item in rating_items:
+            try:
+                user_for_rating, _ = User.objects.get_or_create(
+                    telegram_id=item.get('telegram_id')
+                )
+                rating_value = item.get('rating')
+                if rating_value is not None:
+                    Rating.objects.update_or_create(
+                        product=product,
+                        user=user_for_rating,
+                        defaults={'value': rating_value}
+                    )
+            except Exception:
+                # Skip invalid rating items
+                continue
+
+        # Create comments if provided
+        for item in comment_items:
+            try:
+                user_for_comment, _ = User.objects.get_or_create(
+                    telegram_id=item.get('telegram_id')
+                )
+                comment_text = item.get('comment')
+                if comment_text:
+                    Comment.objects.create(
+                        product=product,
+                        user=user_for_comment,
+                        text=comment_text
+                    )
+            except Exception:
+                # Skip invalid comment items
+                continue
 
         return product
 
@@ -126,6 +174,41 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
 
         instance.save()
+        # Optionally process nested ratings/comments on update (append/update)
+        rating_items = self.initial_data.get('ratings') if isinstance(self.initial_data, dict) else None
+        if isinstance(rating_items, list):
+            for item in rating_items:
+                try:
+                    user_for_rating, _ = User.objects.get_or_create(
+                        telegram_id=item.get('telegram_id')
+                    )
+                    rating_value = item.get('rating')
+                    if rating_value is not None:
+                        Rating.objects.update_or_create(
+                            product=instance,
+                            user=user_for_rating,
+                            defaults={'value': rating_value}
+                        )
+                except Exception:
+                    continue
+
+        comment_items = self.initial_data.get('comments') if isinstance(self.initial_data, dict) else None
+        if isinstance(comment_items, list):
+            for item in comment_items:
+                try:
+                    user_for_comment, _ = User.objects.get_or_create(
+                        telegram_id=item.get('telegram_id')
+                    )
+                    comment_text = item.get('comment')
+                    if comment_text:
+                        Comment.objects.create(
+                            product=instance,
+                            user=user_for_comment,
+                            text=comment_text
+                        )
+                except Exception:
+                    continue
+
         return instance
 
 
