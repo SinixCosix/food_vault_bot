@@ -16,9 +16,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'fixtures',
     'products',
     'bot',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'e2e',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
