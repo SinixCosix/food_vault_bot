@@ -1,10 +1,10 @@
 def format_product(product):
-    variant = f"{product['variant']}\n" if product.get('variant') else ""
+    variant = f"{product['variant']}" if product.get('variant') else ""
 
     text = (
-        f"{product['category']}\n"
-        f"{variant}"
-        f"{product['flavor']}\n"
+        f"Category: {product['category']}\n"
+        f"Variant: {variant}\n"
+        f"Flavor: {product['flavor']}\n"
         "\n"
         f"🦖 Arina: {product['rating_arina']}/10\n"
         f"💬 {product.get('comment_arina') or '—'}\n\n"

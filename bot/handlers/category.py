@@ -14,6 +14,7 @@ async def handle_message(message: Message, state: FSMContext):
 
 
 @router.callback_query(F.data.contains('go.to.category'))
+@router.callback_query(F.data.contains('action.new'))
 async def handle_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(States.category)
     await callback.message.edit_text(text=States.category.text, reply_markup=States.category.keyboard)

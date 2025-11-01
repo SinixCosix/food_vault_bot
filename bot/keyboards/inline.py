@@ -38,15 +38,6 @@ def category_keyboard():
 
 
 @navigation_keyboard
-def product_keyboard():
-    kb_list = [[InlineKeyboardButton(text=item, callback_data=f'select.product.{item}')]
-               for item in storage['products']
-               ]
-
-    return InlineKeyboardMarkup(inline_keyboard=kb_list)
-
-
-@navigation_keyboard
 def rating_keyboard(user: str):
     builder = InlineKeyboardBuilder()
     button_labels = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']

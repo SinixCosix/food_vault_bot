@@ -1,6 +1,6 @@
 from aiogram.fsm.state import State as AiogramState, StatesGroup as AiogramStatesGroup
 
-from bot.keyboards.inline import category_keyboard, rating_keyboard, product_keyboard, navigation_keyboard
+from bot.keyboards.inline import category_keyboard, rating_keyboard, navigation_keyboard
 
 
 class State(AiogramState):
@@ -16,8 +16,8 @@ class States(AiogramStatesGroup):
         'keyboard': category_keyboard()
     })
     product = State({
-        'text': 'Select or create category:',
-        'keyboard': product_keyboard(
+        'text': 'Enter brand:',
+        'keyboard': navigation_keyboard()(
             navigation={
                 'back': 'go.to.category'
             },
