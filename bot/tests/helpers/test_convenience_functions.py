@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from bot.utils.api_client import create_product_from_bot_data, save_rating_from_bot, save_comment_from_bot
+from bot.utils.api_client import create_product, save_rating_from_bot, save_comment_from_bot
 
 
 class TestConvenienceFunctions:
@@ -20,7 +20,7 @@ class TestConvenienceFunctions:
             mock_client = AsyncMock()
             mock_client.create_product.return_value = expected_response
             mock_client_class.return_value.__aenter__.return_value = mock_client
-            result = await create_product_from_bot_data(bot_data)
+            result = await create_product(bot_data)
             assert result == expected_response
             mock_client.create_product.assert_called_once_with(
                 category='Energy Drink',
@@ -60,6 +60,6 @@ class TestConvenienceFunctions:
             mock_client.create_product.side_effect = Exception("API Error")
             mock_client_class.return_value.__aenter__.return_value = mock_client
             with pytest.raises(Exception, match="API Error"):
-                await create_product_from_bot_data({'category': 'Test'})
+                await create_product({'category': 'Test'})
 
 
