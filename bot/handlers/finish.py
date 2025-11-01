@@ -30,7 +30,7 @@ async def finish(message_or_callback, state: FSMContext):
         
         text = format_product(product)
         message = message_or_callback.message if hasattr(message_or_callback, 'message') else message_or_callback
-        await message.answer(f"✅ Product saved successfully!\n\n{text}", reply_markup=finish_keyboard())
+        await message.answer(f"{text}", reply_markup=finish_keyboard())
         
     except Exception as e:
         await state.clear()
